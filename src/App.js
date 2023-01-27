@@ -36,9 +36,9 @@ function Result({ correct }) {
         Ви відгадали {correct} відповіді з {questions.length}
       </h2>
       <h2 style={{ color: 'red' }}>
-        {/* {correct > 2
+        {correct > 2
           ? 'Ви не новачок у цій справі, ви Майстер'
-          : 'Ви новачок, йдіть ще повчіть...'} */}
+          : 'Ви новачок, йдіть ще повчіть...'}
       </h2>
       <a href="/">
         <button>Спробувати знову!</button>
