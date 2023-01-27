@@ -1,0 +1,24 @@
+* {
+  box-sizing: border-box;
+}
+.startWindow {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.startButton {
+  margin: 20px;
+  padding: 10px;
+  font-size: 25px;
+  border-radius: 10%;
+  border: 2px soild white;
+}
+
+.startButton:hover {
+  border: 2px solid #6a5be2;
+  background-color: #6a5be2;
+  color: white;
+  transition: 700ms;
+}

@@ -1,4 +1,5 @@
 import { useState, useNavigate } from 'react'
+import StartPage from './components/startPage/StartPage'
 import './index.scss'
 
 const questions = [
@@ -34,6 +35,11 @@ function Result({ correct }) {
       <h2>
         Ви відгадали {correct} відповіді з {questions.length}
       </h2>
+      <h2 style={{ color: 'red' }}>
+        {/* {correct > 2
+          ? 'Ви не новачок у цій справі, ви Майстер'
+          : 'Ви новачок, йдіть ще повчіть...'} */}
+      </h2>
       <a href="/">
         <button>Спробувати знову!</button>
       </a>
@@ -46,6 +52,7 @@ function Game({ step, question, onClickVariant }) {
 
   const percentage = Math.round((step / questions.length) * 100)
   console.log(percentage)
+
   return (
     <>
       <div className="progress">
@@ -71,6 +78,7 @@ function App() {
   const [step, setStep] = useState(0)
   const [correct, setCorrect] = useState(0)
   const question = questions[step]
+  const [isChecked, setIsChecked] = useState(true)
 
   const onClickVariant = (index) => {
     console.log(step, index)
@@ -81,12 +89,25 @@ function App() {
     }
   }
 
+  const startQuiz = () => {
+    setIsChecked(false)
+  }
   return (
     <div className="App">
-      {step !== questions.length ? (
-        <Game step={step} question={question} onClickVariant={onClickVariant} />
+      {isChecked ? (
+        <StartPage startQuiz={startQuiz} />
       ) : (
-        <Result correct={correct} step={step} setStep={setStep} />
+        <div>
+          {step !== questions.length ? (
+            <Game
+              step={step}
+              question={question}
+              onClickVariant={onClickVariant}
+            />
+          ) : (
+            <Result correct={correct} step={step} setStep={setStep} />
+          )}
+        </div>
       )}
     </div>
   )
