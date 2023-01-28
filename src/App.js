@@ -1,21 +1,20 @@
-import React from 'react';
-import './index.scss';
-
-function Collection({ name, images }) {
-  return (
-    <div className="collection">
-      <img className="collection__big" src={images[0]} alt="Item" />
-      <div className="collection__bottom">
-        <img className="collection__mini" src={images[1]} alt="Item" />
-        <img className="collection__mini" src={images[2]} alt="Item" />
-        <img className="collection__mini" src={images[3]} alt="Item" />
-      </div>
-      <h4>{name}</h4>
-    </div>
-  );
-}
+import React, { useEffect, useState } from 'react'
+import Collection from './Collection'
+import './index.scss'
 
 function App() {
+  const [collections, setCollections] = useState([])
+  console.log(collections)
+  useEffect(() => {
+    fetch('https://63d4d4c50e7ae91a00a2fb57.mockapi.io/api/p1/collection')
+      .then((res) => res.json())
+      .then((json) => setCollections(json))
+      .catch((err) => {
+        console.warn(err)
+        alert('Error from got date')
+      })
+  }, [])
+
   return (
     <div className="App">
       <h1>Моя коллекция фотографий</h1>
@@ -46,7 +45,7 @@ function App() {
         <li>3</li>
       </ul>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
