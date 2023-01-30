@@ -3,32 +3,43 @@ import Collection from './Collection'
 import './index.scss'
 
 const cats = [
-  { name: 'Все' },
-  { name: 'Море' },
-  { name: 'Горы' },
-  { name: 'Архитектура' },
-  { name: 'Города' },
+  { name: 'All' },
+  { name: 'Sea' },
+  { name: 'Mountains' },
+  { name: 'Architecture' },
+  { name: 'Cities' },
 ]
 
 function App() {
   const [categoryId, setCategortId] = useState(0) // All category - 0
   const [seacrhValue, setSearchValue] = useState('')
-  console.log(seacrhValue)
+  const [isLoading, setIsLoading] = useState(true)
+  const [page, setPage] = useState(0)
   const [collections, setCollections] = useState([])
   console.log(collections)
+
   useEffect(() => {
-    fetch('https://63d4d4c50e7ae91a00a2fb57.mockapi.io/api/p1/collection')
+    setIsLoading(true) //What would work when switching
+    const URL = `https://63d4d4c50e7ae91a00a2fb57.mockapi.io/api/p1/collection?`
+    const category = categoryId ? `category=${categoryId}` : ``
+    // const page = page && `page=${page}&limit=3&`
+    // const page = `page=${categoryId}&limit=3&`
+
+    fetch(`${URL}`)
+      // created sort by category!)
       .then((res) => res.json())
       .then((json) => setCollections(json))
       .catch((err) => {
         console.warn(err)
         alert('Error from got date')
       })
-  }, [])
+      .finally(() => setIsLoading(false))
+    // created sort by category!
+  }, [categoryId, page]) // dependence
 
   return (
     <div className="App">
-      <h1 style={{ color: 'black' }}>Моя коллекция фотографий</h1>
+      <h1 style={{ color: 'black' }}>My photo collection</h1>
       <div className="top">
         <ul className="tags">
           {/* <li className="active">Все</li> */}
@@ -50,20 +61,28 @@ function App() {
         />
       </div>
       <div className="content">
-        {collections
-          .filter((obj) => {
-            if (obj.name.toLowerCase().includes(seacrhValue.toLowerCase())) {
-              return obj.name
-            }
-          })
-          .map((obj, index) => (
-            <Collection key={index} name={obj.name} images={obj.photos} />
-          ))}
+        {isLoading ? (
+          <h2>Loading...</h2>
+        ) : (
+          collections
+            .filter((obj) =>
+              obj.name.toLowerCase().includes(seacrhValue.toLowerCase())
+            )
+            .map((obj, index) => (
+              <Collection key={index} name={obj.name} images={obj.photos} />
+            ))
+        )}
       </div>
       <ul className="pagination">
-        <li>1</li>
-        <li className="active">2</li>
-        <li>3</li>
+        {[...Array(4)].map((_, i) => (
+          <li
+            key={i}
+            onClick={() => setPage(i + 1)}
+            className={page === i + 1 ? 'active' : ''}
+          >
+            {i + 1}
+          </li>
+        ))}
       </ul>
     </div>
   )
