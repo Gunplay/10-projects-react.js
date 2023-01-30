@@ -20,13 +20,15 @@ function App() {
 
   useEffect(() => {
     setIsLoading(true) //What would work when switching
-    const URL = `https://63d4d4c50e7ae91a00a2fb57.mockapi.io/api/p1/collection?`
+
     const category = categoryId ? `category=${categoryId}` : ``
-    // const page = page && `page=${page}&limit=3&`
+    // const page = page ? `page=${page}&limit=3&`:
     // const page = `page=${categoryId}&limit=3&`
 
-    fetch(`${URL}`)
-      // created sort by category!)
+    fetch(
+      // created sort by category!
+      `https://63d4d4c50e7ae91a00a2fb57.mockapi.io/api/p1/collection?${category}`
+    )
       .then((res) => res.json())
       .then((json) => setCollections(json))
       .catch((err) => {
